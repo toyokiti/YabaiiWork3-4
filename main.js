@@ -81,39 +81,71 @@
         const tbody = document.getElementById('tbody');
         deleteTaskTable(tbody);
 
-        tasks.forEach((value, index) => {
-            // trの作成
-            const tr = document.createElement('tr');
-            // tdの作成
-            const id = document.createElement('td');
-            const name = document.createElement('td');
-            const status = document.createElement('td');
-            // 各HTML要素に、テキストとクラス名を追加
-            addClassAndText(id, index, 'id');
-            addClassAndText(name, value.name, 'taskName' );
-            addClassAndText(status, '', 'status');
-            // trの中にtdを追加
-            tr.appendChild(id);
-            tr.appendChild(name);
-            tr.appendChild(status);
-            // 状態列にボタンをそれぞれ追加
-            createStatusBtn(value, tr);
-            createDeleteBtn(tr);
-            // テーブルにtrを追加
-            tbody.appendChild(tr);
-        });
+            tasks.forEach((value, index) => {
+                    // trの作成
+                    const tr = document.createElement('tr');
+                    // tdの作成
+                    const id = document.createElement('td');
+                    const name = document.createElement('td');
+                    const status = document.createElement('td');
+                    // 各HTML要素に、テキストとクラス名を追加
+                    addClassAndText(id, index, 'id');
+                    addClassAndText(name, value.name, 'taskName' );
+                    addClassAndText(status, '', 'status');
+                    // trの中にtdを追加
+                    tr.appendChild(id);
+                    tr.appendChild(name);
+                    tr.appendChild(status);
+                    // 状態列にボタンをそれぞれ追加
+                    createStatusBtn(value, tr);
+                    createDeleteBtn(tr);
+                    // テーブルにtrを追加
+                    tbody.appendChild(tr);
+                });
     }
+    
+    // ラジオボタンが変更されたときに、ブラウザの描画を行うイベント
+    document.getElementsByName('radiobutton').forEach(value => {
+        value.addEventListener('change', () => {
+            const status = value.value //選択されたラジオボタンを取得
+            const complete = '完了';
+            const working = '作業中';
+            switch (status) {
+                case 'all':
+                    refleshTable();
+                    break;
+                case 'working':
+                    hideTask(working);
+                    break;
+                case 'complete':
+                    hideTask(complete);
+                    break;
+            }
+        });
+    })
 
+    // 選択されたラジオボタンに応じてブラウザのタスクを非表示にする。
+    const hideTask = (status) => {
+        const tr = document.getElementById('tbody').getElementsByTagName('tr');
+        refleshTable();
+        tasks.forEach((value, index) => {
+            if (value.status !== status) {
+                tr[index].style.display = 'none';
+            }
+        })    
+    }
+    
     // 新しいタスクを追加する関数: tasksに、新しいタスクを追加して表示する 
     const addTask = (taskName) => {
         const tasks = inputTask(taskName);
         refleshTable();
     }
-    
+
     // 追加ボタンをクリックすると発生するイベント
     document.getElementById('btn').addEventListener('click', () => {
         const taskName = document.getElementById('taskName').value; 
         addTask(taskName);
+
     })
-    
+
 }
