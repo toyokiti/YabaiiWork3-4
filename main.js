@@ -60,7 +60,6 @@
         // td取得＆ボタン追加
         const td = tr.getElementsByClassName('status')[0]
         td.appendChild(button);
-
         button.addEventListener('click', () => {
             // 削除ボタンを押されたタスクのIDを取得
             const id = tr.getElementsByClassName('id')[0].textContent;
@@ -70,9 +69,32 @@
 
     // tasks配列から対象のタスクオブジェクトを削除し、ブラウザにtasks配列の中身を再描画する関数
     const deleteTask = (id) => {
-        //削除を押されたタスクをtasks配列から削除
-        tasks.splice(id, 1);
-        refleshTable();
+        tasks.splice(id, 1);  //削除を押されたタスクをtasks配列から削除
+        // どのラジオボタンが選択されている状態か取得し、描画が崩れないように削除
+        document.getElementsByName('radiobutton').forEach((value, index) => {
+            if(value.checked) {
+                choiceRefelshMethod(index);
+            }
+        });
+    }
+
+    // ブラウザの再描画する関数
+    const choiceRefelshMethod = (index) => {
+        const all = 0; //ラジオボタンのすべてが選択
+        const working = 1; //ラジオボタンの作業中が選択
+        const complete = 2; //ラジオボタンの完了が選択
+        
+        switch (index) {
+            case all: //すべて再描画
+                refleshTable();
+                break;
+            case working: //作業中のタスクのみ再描画
+                hideTask('作業中');
+                break;
+            case complete: //完了のタスクのみ再描画
+                hideTask('完了');
+                break;
+        }
     }
 
     // ブラウザに表示されているタスクを一旦削除してから再描画する関数
@@ -81,27 +103,27 @@
         const tbody = document.getElementById('tbody');
         deleteTaskTable(tbody);
 
-            tasks.forEach((value, index) => {
-                    // trの作成
-                    const tr = document.createElement('tr');
-                    // tdの作成
-                    const id = document.createElement('td');
-                    const name = document.createElement('td');
-                    const status = document.createElement('td');
-                    // 各HTML要素に、テキストとクラス名を追加
-                    addClassAndText(id, index, 'id');
-                    addClassAndText(name, value.name, 'taskName' );
-                    addClassAndText(status, '', 'status');
-                    // trの中にtdを追加
-                    tr.appendChild(id);
-                    tr.appendChild(name);
-                    tr.appendChild(status);
-                    // 状態列にボタンをそれぞれ追加
-                    createStatusBtn(value, tr);
-                    createDeleteBtn(tr);
-                    // テーブルにtrを追加
-                    tbody.appendChild(tr);
-                });
+        tasks.forEach((value, index) => {
+                // trの作成
+                const tr = document.createElement('tr');
+                // tdの作成
+                const id = document.createElement('td');
+                const name = document.createElement('td');
+                const status = document.createElement('td');
+                // 各HTML要素に、テキストとクラス名を追加
+                addClassAndText(id, index, 'id');
+                addClassAndText(name, value.name, 'taskName' );
+                addClassAndText(status, '', 'status');
+                // trの中にtdを追加
+                tr.appendChild(id);
+                tr.appendChild(name);
+                tr.appendChild(status);
+                // 状態列にボタンをそれぞれ追加
+                createStatusBtn(value, tr);
+                createDeleteBtn(tr);
+                // テーブルにtrを追加
+                tbody.appendChild(tr);
+        });
     }
     
     // ラジオボタンが変更されたときに、ブラウザの描画を行うイベント
@@ -145,7 +167,6 @@
     document.getElementById('btn').addEventListener('click', () => {
         const taskName = document.getElementById('taskName').value; 
         addTask(taskName);
-
     })
 
 }
