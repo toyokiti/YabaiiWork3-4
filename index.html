@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>YabaiiWork2</title>
+    <title>YabaiiWork3-4</title>
     <style>
         label {
             display: inline-block;
@@ -24,11 +24,11 @@
 <body>
     <h1>TODOリスト</h1>
     <div class="radiobuttonArea">
-        <input type="radio" name="radiobutton" checked="checked">すべて
-        <input type="radio" name="radiobutton">作業中
-        <input type="radio" name="radiobutton">完了
+        <input type="radio" name="radiobutton" value="all" checked="checked">すべて
+        <input type="radio" name="radiobutton" value="working">作業中
+        <input type="radio" name="radiobutton" value="complete">完了
     </div>
-    
+
     <div class="viewTaskArea">
         <table>
             <thead>
@@ -47,7 +47,6 @@
         <input type="text" id="taskName">
         <button id="btn">追加</button>
     </div>
-
 
     <script src="main.js"></script>
 </body>
