@@ -89,10 +89,10 @@
                 refleshTable();
                 break;
             case working: //作業中のタスクのみ再描画
-                hideTask('作業中');
+                filterTask('作業中');
                 break;
             case complete: //完了のタスクのみ再描画
-                hideTask('完了');
+                filterTask('完了');
                 break;
         }
     }
@@ -127,27 +127,27 @@
     }
     
     // ラジオボタンが変更されたときに、ブラウザの描画を行うイベント
-    document.getElementsByName('radiobutton').forEach(value => {
-        value.addEventListener('change', () => {
-            const status = value.value //選択されたラジオボタンを取得
+    document.getElementsByName('radiobutton').forEach(radioButton => {
+        radioButton.addEventListener('change', () => {
+            const radio = radioButton.value //選択されたラジオボタンを取得
             const complete = '完了';
             const working = '作業中';
-            switch (status) {
+            switch (radio) {
                 case 'all':
                     refleshTable();
                     break;
                 case 'working':
-                    hideTask(working);
+                    filterTask(working);
                     break;
                 case 'complete':
-                    hideTask(complete);
+                    filterTask(complete);
                     break;
             }
         });
     })
 
     // 選択されたラジオボタンに応じてブラウザのタスクを非表示にする。
-    const hideTask = (status) => {
+    const filterTask = (status) => {
         const tr = document.getElementById('tbody').getElementsByTagName('tr');
         refleshTable();
         tasks.forEach((value, index) => {
